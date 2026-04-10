@@ -1,59 +1,73 @@
 # cuda-genepool
 
-**The mitochondrial instinct engine - the foundational power plant of every agent.**
+**The mitochondrial instinct engine -- the foundational power plant of every agent.**
 
 > The agent doesn't choose to perceive. Instinct makes perception happen.
 
-## What It Does
-
-`cuda-genepool` is the biological foundation that makes every agent *alive*. It implements the full biological pipeline:
-
-### The Pipeline
+## The Biological Pipeline
 
 `Environment -> Sensors -> Membrane -> Enzymes -> Genes -> RNA -> Proteins -> ATP -> Execute`
 
-- **Membrane** - Self/other boundary with antibody security
-- **Enzymes** - Signal-to-gene binding (environmental triggers)
-- **Genes** - Behavioral patterns with fitness tracking and auto-quarantine
-- **RNA Messenger** - Gene-to-behavior translation
-- **Protein** - Compiled, executable behavior
-- **Mitochondrion** - ATP generation/consumption pipeline
+Every step maps to a Rust struct in this crate:
 
-### Instincts (10 built-in)
+| Stage | Component | Function |
+|-------|-----------|----------|
+| Barrier | **Membrane** | Self/other boundary, antibody security |
+| Catalyst | **Enzyme** | Signal-to-gene binding |
+| Template | **Gene** | Behavioral pattern with fitness tracking |
+| Messenger | **RNA Messenger** | Gene-to-behavior translation |
+| Executor | **Protein** | Compiled, executable behavior |
+| Power | **Mitochondrion** | ATP generation/consumption |
+| Pool | **GenePool** | Fleet-wide gene sharing |
 
-Each instinct has a priority, energy cost, and circadian modulation:
-- **Survive** (priority 10) - HALT, TRAP opcodes
-- **Perceive** (priority 8) - IO_READ, LOAD, CMP
-- **Navigate** (priority 7) - JMP, CALL, RET
-- **Communicate** (priority 6) - TELL, BROADCAST
-- **Learn** (priority 5) - BOX, MOV
-- **Defend** (priority 9) - REGION_GUARD, VERIFY
-- **Rest** (priority 1) - Generates ATP (energy=-1.0)
-- **Reproduce** (priority 3) - Gene crossover and sharing
-- **Adapt** (priority 4) - Mutation and epigenetic modification
-- **Cooperate** (priority 2) - GenePool sharing
+## 10 Built-in Instincts
 
-### Key Mechanics
+| Instinct | Priority | Energy | Maps to Opcodes |
+|----------|----------|--------|----------------|
+| Survive | 10 | 0.8 | HALT, TRAP |
+| Defend | 9 | 0.8 | REGION_GUARD, VERIFY |
+| Perceive | 8 | 0.5 | IO_READ, LOAD, CMP |
+| Navigate | 7 | 0.5 | JMP, CALL, RET |
+| Communicate | 6 | 1.0 | TELL, BROADCAST |
+| Learn | 5 | 0.8 | BOX, MOV |
+| Adapt | 4 | 0.6 | mutation operations |
+| Reproduce | 3 | 0.7 | gene crossover |
+| Cooperate | 2 | 0.3 | GenePool sharing |
+| Rest | 1 | -1.0 | ATP generation |
 
-- **Gene auto-quarantine**: Fitness drops below 0.1 after 10+ uses with <15% success
+## Key Mechanics
+
+- **Gene auto-quarantine**: Fitness drops below 0.1 after 10+ uses with less than 15% success rate
 - **Membrane antibodies**: "rm -rf", "format", "drop_all" blocked at the boundary
-- **GenePool sharing**: Only genes above 0.5 fitness propagate
-- **Apoptosis**: Triggered when fitness < 0.1 for patience_ticks consecutive cycles
+- **GenePool sharing**: Only genes above 0.5 fitness propagate to other agents
+- **Apoptosis**: Triggered when fitness below 0.1 for 10 consecutive cycles
+- **Circadian modulation**: Cosine function modulates instinct strength by hour
+
+## Usage
+
+```rust
+use cuda_genepool::{Mitochondrion, GenePool, Gene, Instinct};
+
+let mito = Mitochondrion::new(100.0);  // 100 ATP budget
+mito.activate(Instinct::Perceive);     // costs 0.5 ATP
+mito.activate(Instinct::Rest);         // generates ATP (cost = -1.0)
+
+let gene = Gene::new("navigate_to_goal")
+    .with_fitness(0.85)
+    .with_energy_cost(0.5);
+```
 
 ## Ecosystem Integration
 
-- `cuda-biology` - Higher-level BiologicalAgent using this engine
-- `cuda-neurotransmitter` - Modulates instinct strength
-- `cuda-energy` - ATP budgets and circadian rhythm
-- `flux-runtime-c` - Instinct opcodes map to VM instructions
-- `cuda-instruction-set` - 80 opcodes including instinct operations
+- [cuda-biology](https://github.com/Lucineer/cuda-biology) -- Higher-level BiologicalAgent
+- [cuda-neurotransmitter](https://github.com/Lucineer/cuda-neurotransmitter) -- Modulates instinct strength
+- [cuda-energy](https://github.com/Lucineer/cuda-energy) -- ATP budgets and circadian rhythm
+- [flux-runtime-c](https://github.com/Lucineer/flux-runtime-c) -- Instinct opcodes map to VM instructions
+- [cuda-instruction-set](https://github.com/Lucineer/cuda-instruction-set) -- 80 opcodes including instinct operations
 
-## See Also
+## The Insight
 
-- [cuda-biology](https://github.com/Lucineer/cuda-biology) - Biological agent
-- [cuda-energy](https://github.com/Lucineer/cuda-energy) - ATP and circadian
-- [cuda-neurotransmitter](https://github.com/Lucineer/cuda-neurotransmitter) - Synapse modulation
-- [flux-runtime-c](https://github.com/Lucineer/flux-runtime-c) - C VM executing instinct opcodes
+The mitochondrial instinct engine is NOT a library you call. It's the engine that runs BENEATH every agent. The agent doesn't choose to perceive -- instinct makes perception happen. The agent doesn't choose to conserve energy -- the energy budget enforces it. This is the power plant.
 
 ## License
 
